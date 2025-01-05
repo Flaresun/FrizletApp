@@ -1,0 +1,5 @@
+# Modules to ignore 
+
+node_modules
+*.env
+package.json
