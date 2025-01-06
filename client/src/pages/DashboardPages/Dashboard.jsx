@@ -15,7 +15,7 @@ const Dashboard = () => {
     
 
   return (
-    <div className='mx-[3rem] sm:px-[1rem]  pt-[2rem]'>{/**px-[3rem] lg:px-[8-rem] xl:px-[10rem] */}
+    <div className='mx-[2rem] lg:mx-[3rem] pt-[2rem]'>{/**px-[3rem] lg:px-[8-rem] xl:px-[10rem] */}
 
       <div className="flex items-start justify-center ">  
 

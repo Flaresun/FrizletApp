@@ -41,7 +41,7 @@ const Navbar = () => {
         <div  className="flex items-center justify-between mr-3">
             <div className="hidden md:flex flex-col items-start justify-start font-light">
                 <p className="text-xl mb-2">Welcome back,</p>
-                <h1 className="text-xl md:text-2xl lg:text-4xl font-bold">{userName}</h1>
+                <h1 className="text-xl md:text-2xl lg:text-4xl font-semibold">{userName}</h1>
             </div>
             <div className="flex md:hidden cursor-pointer">
                       <RxHamburgerMenu size={60} />

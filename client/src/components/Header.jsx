@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { assets } from '../assets/assets'
 import { AppContent } from '../context/AppContext'
-import { BackgroundBeams } from './ui/background-beams'
 import { useNavigate } from 'react-router-dom'
 
 const Header = () => {
@@ -28,8 +27,6 @@ const Header = () => {
         </div>
         <div className="flex">
           <img src={assets.header_img} alt="" className="z-[-10]" />
-          {/*<BackgroundBeams className="z-[-5]"/>*/}
-
             
         </div>
         
