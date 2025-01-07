@@ -5,7 +5,7 @@ const days = ["Sunday", "Monday","Tuesday", "Wednesday", "Thursday", "Friday", "
 const months = ["Janurary", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 const time = [5,10,3,10,4,5,8]
 
-const barColors = "blue"
+const barColors = "#183a70"
 const windowWidth = window.innerWidth;
 
 const axis = windowWidth < 1000 ? "y" : "x"
@@ -23,11 +23,10 @@ const data = {
     options : {
         indexAxis: axis,
         maintainAspectRatio: false,
-
         skipNull : true,
         plugins : {
             legend : {
-                display: false
+                display: false,
             }
         }
     }

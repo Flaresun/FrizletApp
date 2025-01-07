@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import LeftPanel from '../../components/DashboardComponents/LeftPanel'
 import Navbar from '../../components/DashboardComponents/Navbar'
 import Main from '../../components/DashboardComponents/Main'
 import { RxHamburgerMenu } from "react-icons/rx";
+import { AppContent } from '../../context/AppContext';
 
 const Dashboard = () => {
 
@@ -12,10 +13,18 @@ const Dashboard = () => {
     // Search Bar to search for all your flashcards
     // Top right is donation to support dev and user profile thing 
       // On clicking to support user it should load settings, dark/light mode, logout, etc
-    
+  const {leftPanel,setLeftPanel} = useContext(AppContent);
+  
+  addEventListener("resize", (e) => {
+    if (e.target.innerWidth > 768) {
+      setLeftPanel(false);
+    }
+  });
+
+  
 
   return (
-    <div className='mx-[2rem] lg:mx-[3rem] pt-[2rem]'>{/**px-[3rem] lg:px-[8-rem] xl:px-[10rem] */}
+    <div className='px-[2rem] lg:px-[3rem] p-[3rem] lg:p-[2rem] dark:bg-gradient-to-br from-slate-900 to-slate-400 overflow-y-hidden'>{/**px-[3rem] lg:px-[8-rem] xl:px-[10rem] */}
 
       <div className="flex items-start justify-center ">  
 
@@ -23,12 +32,19 @@ const Dashboard = () => {
           <LeftPanel/>
         </div>
 
-
         
         
-        <div className="flex flex-col w-full">
+        
+        <div className="flex flex-col w-full max-h-full">
           <Navbar /> 
-          <Main  />
+          {leftPanel ? 
+            <div id="panel" className=" h-[93vh] flex md:hidden items-center justify-center max-w-full"><LeftPanel /> </div>
+            
+          : 
+            <Main  />
+           
+          }
+          
         </div>
          
       </div>

@@ -10,13 +10,10 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const {userData, getUserData,isLoggedin} = useContext(AppContent);
-  const navigate = useNavigate();
-
-
-  
+  const navigate = useNavigate();  
 
   useEffect(() => {
-    userData && userData.isAccountVerified && navigate("/dashboard")
+    isLoggedin && userData && userData.isAccountVerified && navigate("/dashboard")
   },[isLoggedin, userData])
 
 

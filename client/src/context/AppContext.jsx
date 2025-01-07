@@ -11,6 +11,8 @@ export const AppContextProvider = (props) => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
     const [isLoggedin, setIsLoggedin] = useState(false);
     const [userData, setUserData] = useState(false);
+    const [theme, setTheme] = useState(true);
+    const [leftPanel, setLeftPanel] = useState(false);
 
 
     // To call this function whenever the webpage is loaded, we use useEffect
@@ -45,7 +47,9 @@ export const AppContextProvider = (props) => {
         backendUrl,
         isLoggedin, setIsLoggedin,
         userData, setUserData,
-        getUserData
+        getUserData,
+        theme, setTheme,
+        leftPanel,setLeftPanel
     }
 
 
