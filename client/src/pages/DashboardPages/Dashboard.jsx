@@ -7,12 +7,18 @@ import { AppContent } from '../../context/AppContext';
 
 const Dashboard = () => {
 
-  // Dashboard should include these components
-    // Main section of page: Welcome back (email name)
-      // Recent flashcards used 
-    // Search Bar to search for all your flashcards
-    // Top right is donation to support dev and user profile thing 
-      // On clicking to support user it should load settings, dark/light mode, logout, etc
+  
+  /**
+   * Next Steps ****************
+   * Easy : 
+    * About Page
+    * Profile Page
+   * 
+   * Hard:
+    * Flashcard Page
+    * Donate Page
+    * Connecting Recent Flashcards and Daily Activity 
+   */
   const {leftPanel,setLeftPanel} = useContext(AppContent);
   
   addEventListener("resize", (e) => {
@@ -24,9 +30,9 @@ const Dashboard = () => {
   
 
   return (
-    <div className='px-[2rem] lg:px-[3rem] p-[3rem] lg:p-[2rem] dark:bg-gradient-to-br from-slate-900 to-slate-400 overflow-y-hidden'>{/**px-[3rem] lg:px-[8-rem] xl:px-[10rem] */}
+    <div className='px-[2rem] lg:px-[3rem] p-[3rem] lg:p-[2rem] dark:bg-gradient-to-br from-slate-900 to-slate-400 overflow-y-hidden xl:h-[100vh]'>{/**px-[3rem] lg:px-[8-rem] xl:px-[10rem] */}
 
-      <div className="flex items-start justify-center ">  
+      <div className="flex items-start justify-center  ">  
 
         <div className="sticky top-8 h-[93vh] hidden md:flex items-center justify-center mr-10">
           <LeftPanel/>
@@ -36,7 +42,7 @@ const Dashboard = () => {
         
         
         <div className="flex flex-col w-full max-h-full">
-          <Navbar /> 
+          <Navbar search={true} message={true} /> 
           {leftPanel ? 
             <div id="panel" className=" h-[93vh] flex md:hidden items-center justify-center max-w-full"><LeftPanel /> </div>
             
@@ -46,6 +52,7 @@ const Dashboard = () => {
           }
           
         </div>
+
          
       </div>
       

@@ -1,12 +1,15 @@
 import { Outlet, Navigate, useNavigate } from "react-router-dom";
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AppContent } from "../context/AppContext";
-
+import axios from "axios";
 
 const ProtectedRoutes =  () => {
   let authenticatedUser = false;
-  const {userData, getUserData, isLoggedin} = useContext(AppContent);
+  const {userData,isLoggedin,backendUrl} = useContext(AppContent);
   const navigate = useNavigate();
+  if (userData === undefined) {
+    return null 
+  }
 
   // If user is logged in and verified take them to dashboard
   if (isLoggedin && userData.isAccountVerified) {
@@ -19,8 +22,9 @@ const ProtectedRoutes =  () => {
   }
 
   // If user is not logged in and not veriified,
-
   return <Navigate to="login"/>
+  
+
 
 }
 

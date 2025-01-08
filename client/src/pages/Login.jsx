@@ -51,7 +51,7 @@ const Login = () => {
       toast.error(error.message);
     }
   }
-
+  
   useEffect(() => {
       isLoggedin && userData && userData.isAccountVerified && navigate("/dashboard")
     },[isLoggedin, userData])

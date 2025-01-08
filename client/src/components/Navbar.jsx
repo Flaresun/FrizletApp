@@ -39,15 +39,7 @@ const NavBar = () => {
       </div>
         
         {
-          userData ?
-           <div className="w-8 h-8 flex justify-center items-center rounded-full bg-black text-white relative group">
-            {userData.email.split("@")[0][0].toUpperCase()}
-            <div className="absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-10">
-              <ul className="list-none m-0 p-2 bg-gray-100 text-sm">
-                <li onClick={logout} className="py-1 px-2 hover:bg-gray-200 cursor-pointer pr-10">Logout</li>
-              </ul>
-            </div>
-           </div> : (
+          (
             <div className="flex flex-row-reverse justify-center items-center sm:text-xl gap-3 ">
               <button onClick={()=>navigate("/login")} className="flex items-center gap-2 border border-gray-500 rounded-full px-6 py-2 text-gray-800 font-semibold hover:bg-gray-100 transition-all hover:scale-105 active:scale-95">
                 Login <img src={assets.arrow_icon} alt="" className="" />

@@ -44,7 +44,7 @@ const Main = () => {
   const itemSize = 30;
   return (
       
-      <div className="max-h-full flex flex-col text-3xl pt-10 dark:text-slate-900">
+      <div className="max-h-full w-full  flex flex-col text-3xl pt-10 dark:text-slate-900">
           {/**First section about recent flashcards */}
           <div className="flex flex-col">
             <div className="flex  sm:justify-start sm:items-center justify-center">

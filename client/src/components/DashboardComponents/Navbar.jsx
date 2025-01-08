@@ -16,7 +16,7 @@ import { toast } from 'react-toastify';
 import LeftPanel from './LeftPanel';
 import { IoClose } from "react-icons/io5";
 
-const Navbar = () => {
+const Navbar = (props) => {
     
     const {backendUrl, userData, setUserData,isLoggedin, setIsLoggedin, theme,setTheme,leftPanel, setLeftPanel} = useContext(AppContent);
 
@@ -88,27 +88,30 @@ const Navbar = () => {
         setInputValue(e.target.value);
         
     }
-    console.log(inputValue);
-
-
 
   return (
     <div className="flex flex-col">    
         <div  className="max-h-full flex items-center justify-between mr-3 dark:text-slate-300">
+            {props.message && (
             <div className="hidden md:flex flex-col items-start justify-start font-light">
                 <p className="text-xl mb-2">Welcome back,</p>
                 <h1 className="text-xl md:text-2xl lg:text-4xl font-semibold">{userName}</h1>
             </div>
+            )}
+
+            
             <div onClick={showLeftPanel} className="flex md:hidden cursor-pointer">
                         {leftPanel ? <IoClose size={60} />: <RxHamburgerMenu size={60} />}
             </div>
+            {props.search && (
+                <div onClick={showSearchBar}className="flex flex-row items-center justify-center text-center p-3 600 rounded-md shadow-md text-lg ">
+                    <button className='mx-3 cursor-pointer'><CiSearch size={30} /></button>
+                    <input type="text"  value={inputValue}  onInput={handleInput} className="outline-none w-0 hover:w-full md:w-full bg-transparent" placeholder='Search for your Flashcards'/>
+                </div>
+            )}
+            
 
-            <div onClick={showSearchBar}className="flex flex-row items-center justify-center text-center p-3 600 rounded-md shadow-md text-lg ">
-                <button className='mx-3 cursor-pointer'><CiSearch size={30} /></button>
-                <input type="text"  value={inputValue}  onInput={handleInput} className="outline-none w-0 hover:w-full md:w-full bg-transparent" placeholder='Search for your Flashcards'/>
-            </div>
-
-            <div className=" relative flex flex-col items-center justify-start font-light">
+            <div className={`relative flex flex-col items-end justify-center font-light float-right ${!props.search && !props.message && "w-full"} `}>
                 <button onClick={toggleUserActive} className="modal items-center text-center flex justify-center bg-slate-200 dark:bg-slate-700 w-8 h-8 p-6 rounded-full text-xl">{userTag}</button>
 
 
