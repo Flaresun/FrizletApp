@@ -18,7 +18,7 @@ import exams from "./exams.png"
 import appStore from "./app_store.png"
 import googlePlayButton from "./google_play_button.png"
 import appStoreButton from "./app_store_button.png"
-
+import aboutLogo from "./aboutLogo.jpg";
 
 export const assets = {
     arrow_icon,
@@ -40,5 +40,6 @@ export const assets = {
     exams,
     appStore,
     appStoreButton,
-    googlePlayButton
+    googlePlayButton,
+    aboutLogo
 }

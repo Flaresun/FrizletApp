@@ -19,8 +19,8 @@ const Settings = () => {
   const [openNoteModal, setOpenNoteModal] = useState(false);
 
   return (
-    <div className=' relative dark:bg-slate dark:bg-gradient-to-br from-slate-900 to-slate-400 w-full h-[100vh] block '>
-      <div className="h-full px-[2rem] lg:px-[3rem] p-[3rem] lg:p-[2rem] flex flex-col r  dark:bg-slate dark:bg-gradient-to-br from-slate-900 to-slate-400 max-h-full ">
+    <div className=' '>
+      <div className="h-full px-[2rem] lg:px-[3rem] p-[3rem] lg:p-[2rem] flex flex-col r   max-h-full ">
 
         <div className=''>
           <div className="flex flex-row items-start justify-start py-5 w-full ">

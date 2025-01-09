@@ -26,7 +26,7 @@ const Header = () => {
             </button>
         </div>
         <div className="flex">
-          <img src={assets.header_img} alt="" className="z-[-10]" />
+          <img src={assets.header_img} alt="" className="" />
             
         </div>
         

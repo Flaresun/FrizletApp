@@ -28,7 +28,7 @@ const App = () => {
   },[theme])
 
   return (
-    <div className={`${mode} overflow-hidden max-h-full`}>
+    <div className={`${mode} overflow-hidden min-h-screen dark:bg-gradient-to-br from-slate-900 to-slate-400`}>
       <ToastContainer />
       <Routes>
         <Route path="/" element={<Home/>} />

@@ -6,8 +6,8 @@ export default function MyModal(props) {
   let [isOpen, setIsOpen] = useState(true)
 
   const {theme, setTheme} = useContext(AppContent);
-
   
+  setTheme()
 
 const setLightMode = () => {
   localStorage.setItem("theme", true);

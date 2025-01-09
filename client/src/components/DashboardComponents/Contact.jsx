@@ -10,7 +10,7 @@ const Contact = () => {
     console.log(e)
   }
   return (
-    <div className='px-[2rem] lg:px-[3rem] p-[3rem] lg:p-[2rem] dark:bg-gradient-to-br from-slate-900 to-slate-400 '>
+    <div className='px-[2rem] lg:px-[3rem] p-[3rem]  '>
 
       <div className="flex">
         <img onClick={() => navigate("/dashboard")} src={assets.FrizletLogo} alt="" className="w-40 cursor-pointer" />

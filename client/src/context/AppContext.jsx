@@ -11,10 +11,10 @@ export const AppContextProvider = (props) => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
     const [isLoggedin, setIsLoggedin] = useState(false);
     const [userData, setUserData] = useState();
-    const [theme, setTheme] = useState(true);
+    const [theme, setTheme] = useState(localStorage.getItem("theme") === "true");
     const [leftPanel, setLeftPanel] = useState(false);
 
-
+    
     // To call this function whenever the webpage is loaded, we use useEffect
     const getAuthState = async () => {
         try {

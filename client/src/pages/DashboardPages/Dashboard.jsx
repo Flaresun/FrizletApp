@@ -10,10 +10,6 @@ const Dashboard = () => {
   
   /**
    * Next Steps ****************
-   * Easy : 
-    * About Page
-    * Profile Page
-   * 
    * Hard:
     * Flashcard Page
     * Donate Page
@@ -30,7 +26,7 @@ const Dashboard = () => {
   
 
   return (
-    <div className='px-[2rem] lg:px-[3rem] p-[3rem] lg:p-[2rem] dark:bg-gradient-to-br from-slate-900 to-slate-400 overflow-y-hidden xl:h-[100vh]'>{/**px-[3rem] lg:px-[8-rem] xl:px-[10rem] */}
+    <div className='px-[2rem] lg:px-[3rem] p-[3rem] lg:p-[2rem] '>{/**px-[3rem] lg:px-[8-rem] xl:px-[10rem] */}
 
       <div className="flex items-start justify-center  ">  
 

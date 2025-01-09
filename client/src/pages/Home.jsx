@@ -18,7 +18,7 @@ const Home = () => {
 
 
   return (
-    <div className='max-w-[200rem]'>
+    <div className='max-w-[200rem] min-h-screen  bg-white'>
         <NavBar/>
         <Header/>
         <Stats />

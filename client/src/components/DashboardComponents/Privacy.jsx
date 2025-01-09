@@ -15,9 +15,9 @@ const Privacy = () => {
 
 
   return (
-    <div className='flex px-[2rem] lg:px-[3rem] p-[3rem] lg:p-[2rem] dark:text-slate-100 dark:bg-gradient-to-br from-slate-900 to-slate-400 overflow-y-hidden '>
+    <div className='flex px-[2rem] lg:px-[3rem] p-[3rem] lg:p-[2rem] '>
 
-        <div className="sticky top-0 h-[100vh] hidden md:flex items-center justify-center mr-10 ">
+        <div className="sticky top-0 hidden md:flex items-center justify-between mr-10 ">
           <LeftPanel/>
         </div>
 
@@ -35,7 +35,7 @@ const Privacy = () => {
                 <h1 className="flex items-center justify-center text-5xl">Privacy Policy</h1>
                 <p className="">Last updated: Janurary 8, 2025</p>
                 
-              <div className="flex flex-col mt-10 text-xl items-center justify-center text-2xl">
+              <div className="flex flex-col mt-10 text-xl items-center justify-center">
                   <p className="">Your privacy is important to us. This Privacy Policy explains how we
                 collect, use, and protect your personal information when you use our
                 website.</p>
