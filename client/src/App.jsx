@@ -17,6 +17,7 @@ import Profile from './components/DashboardComponents/Profile';
 import Privacy from './components/DashboardComponents/Privacy';
 import { useEffect } from 'react';
 import { AppContent } from './context/AppContext';
+import CreateFlashcards from './components/DashboardComponents/CreateFlashcards';
 const App = () => {
 
   const {theme} = useContext(AppContent);
@@ -45,6 +46,8 @@ const App = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/create-cards" element={<CreateFlashcards />} />
+
         </Route>
       </Routes> 
       

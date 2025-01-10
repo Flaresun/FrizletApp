@@ -11,7 +11,7 @@ const Dashboard = () => {
   /**
    * Next Steps ****************
    * Hard:
-    * Flashcard Page
+    * 
     * Donate Page
     * Connecting Recent Flashcards and Daily Activity 
    */
