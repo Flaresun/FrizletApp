@@ -1,15 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { TbCards } from "react-icons/tb";
 import FlashCards from '../../assets/Flashcards';
 import GraphData from './utils/GraphProgress';
 import Chart from 'chart.js/auto';
+import { AppContent } from '../../context/AppContext';
+import axios from "axios";
+import { TfiFaceSad } from "react-icons/tfi";
+
 
 const Main = () => {
 
   const days = ["Sunday", "Monday","Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
   const time = ["5","10","3","10","5","4", "8"]
   const [graph, setGraph] = useState("");
-  
+  const {backendUrl, userData} = useContext(AppContent);
+  const [latestFlashcards, setLatestFlashcards] = useState([]);
+
   /**
    * When the page is loaded here is the lifecycle of these following functions 
    * 
@@ -34,12 +40,37 @@ const Main = () => {
 
   } 
 
+  const getLatestOpenedFlashcards = async () => {
+    if (!userData && !userData.email) return;
+    const {email} = userData;
+
+    try {
+      const {data} = await axios.post(backendUrl + "/api/user/get-flashcards-by-email", {email})
+      if (!data) throw new Error("Data not returned");
+      if (!data.success) throw new Error(data.message);
+
+      // We only want to save the first 6; So we slice(0,5).
+      // Note we must also reverse the array because items are returned in ascending order no matter what we set it to in backend
+      const latestData = data.data.reverse();
+      const end = 5; //  Set to 5 to return the 6 most recent opened flashcards 
+      setLatestFlashcards(latestData.slice(0,end));
+      
+      
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
   useEffect(() => {
     graph.$context && clearTimeout(timeOut)
   },[graph])
 
+  useEffect(() => {
+    getLatestOpenedFlashcards()
+  },[userData])
+
   
- 
 
   const itemSize = 30;
   return (
@@ -47,21 +78,30 @@ const Main = () => {
       <div className="max-h-full w-full  flex flex-col text-3xl pt-10 dark:text-slate-900">
           {/**First section about recent flashcards */}
           <div className="flex flex-col">
-            <div className="flex  sm:justify-start sm:items-center justify-center">
+            <div className="flex  sm:justify-start sm:items-center justify-center ">
               <h1 className="text-2xl flex  ">Recent Flashcards</h1>
             </div>
-            <div className="items-center justify-center grid grid-cols-1 sm:grid-cols-2 mt-5 gap-4 ">
 
-              {FlashCards.map((value,index) => (
-                <div key={index} className="flex flex-row items-center hover:bg-slate-200 dark:hover:bg-slate-500 cursor-pointer active:bg-slate-300 dark:active:bg-slate-400">
-                  <TbCards size={itemSize}/>
-                  <div className="flex flex-col ml-3">
-                    <p className="text-xl font-medium ">({value.name})</p>
-                    <p className="text-lg font-light dark:text-slate-400">({value.length}) terms</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            {latestFlashcards.length === 0 ? (
+              <div className="flex flex-col sm:flex-row items-center justify-center text-center my-10 text-3xl">
+                < TfiFaceSad size={40}/>
+                <h1 className="mt-2 sm:mt-0 sm:pl-5">No Recent Flashcards Available</h1>
+              </div>
+            ) : (
+              <div className="items-center justify-center grid grid-cols-1 sm:grid-cols-2 mt-5 gap-4 ">
+                {latestFlashcards.map((value,index) => (
+                  <div key={index} className="flex flex-row items-center hover:bg-slate-200 dark:hover:bg-slate-500 cursor-pointer active:bg-slate-300 dark:active:bg-slate-400">
+                      <TbCards size={itemSize}/>
+                      <div className="flex flex-col ml-3">
+                        <p className="text-xl font-medium ">{value.title}</p>
+                        <p className="text-lg font-light dark:text-slate-400">({value.terms.length}) terms</p>
+                      </div>
+                    </div>
+                ))}
+              </div>
+            )}
+
+
           </div>
           
           {/**Second section about recent activity */}

@@ -5,7 +5,8 @@ import { AppContent } from '../../context/AppContext'
 import userFlashCards from '../../assets/userFlashCards'
 import { useNavigate } from 'react-router-dom'
 import { FaRegTrashCan } from "react-icons/fa6";
-
+import {toast} from "react-toastify";
+import axios from "axios"
 
 const CreateFlashcards = () => {
 
@@ -13,7 +14,7 @@ const CreateFlashcards = () => {
   const [deletedCards, setDeletedCards] = useState([])
   let cardIndexCount = 0;
 
-  const {leftPanel,setLeftPanel} = useContext(AppContent);
+  const {leftPanel,setLeftPanel, backendUrl, userData} = useContext(AppContent);
   const navigate = useNavigate();
       
   addEventListener("resize", (e) => {
@@ -81,26 +82,50 @@ const CreateFlashcards = () => {
     return true
   }
 
-  const createCards = () => {
+  const createCards = async () => {
     // Check that the user has elements in these values before creating 
+    const title = document.querySelectorAll("#cardTitle")[0].value;
+    const description = document.querySelectorAll("#cardDesc")[0].value;
+    const terms = []
+    const definitions = []
 
+    // Get and Validate the data needed to create flashcard
     document.querySelectorAll("#termTextArea").forEach((value,i) => {
-      console.log(value.value)
+      if (value.value !== "") terms.push(value.value)
     })
     document.querySelectorAll("#defTextArea").forEach((value,i) => {
-      console.log(value.value)
-    })
-    document.querySelectorAll("#cardTitle").forEach((value,i) => {
-      console.log(value.value)
-    })
-    document.querySelectorAll("#cardDesc").forEach((value,i) => {
-      console.log(value.value)
+      if (value.value !== "") definitions.push(value.value)
     })
 
+    if (!title || !description) {
+      return toast.error("Title & Description Required")
+    }
+    if (terms.length ===0 || definitions.length === 0 ) {
+      return toast.error("At least one Term and Definition Required")
+    }
 
+    // Save Data
+    try {
+      const {email} = userData;
+      const {data} = await axios.post(backendUrl + "/api/user/create-flashcards", {email, terms, definitions, title, description})
+      console.log(data)
+      if (!data) {
+        throw new Error("Error")
+      }
+      if (!data.success) {
+        throw new Error(data.message)
+      }
+      toast.success(data.message);
 
+    // End by Navigating to study for card
+    //return data.id (Maybe navigate to dynamic route with the id mongodb generates )
+ 
+      navigate("/dashboard")
 
-
+    } catch (error) {
+      console.log(error)
+      return toast.error(error.message);
+    }
 
     // End by Navigating to study for card 
     //navigate("/dashboard")

@@ -10,8 +10,8 @@ userRouter.post("/data-by-email", getUserByEmailForValidation)
 userRouter.post("/create-flashcards", createUserFlashcards)
 userRouter.get("/get-flashcards-by-id", getUserFlashcardsById)
 userRouter.post("/delete-flashcards", deleteUserFlashcards)
-userRouter.get("/get-flashcards-by-email", getFlashcardsByEmail)
-userRouter.get("/get-latest-flashcard-by-email", getLatestOpenedFlashcards)
+userRouter.post("/get-flashcards-by-email", getFlashcardsByEmail)
+userRouter.post("/get-latest-flashcard-by-email", getLatestOpenedFlashcards)
 userRouter.post("/update-last-opened-date", updateLastDateOpened)
 
 

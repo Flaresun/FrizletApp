@@ -68,7 +68,7 @@ export const createUserFlashcards = async (req,res) => {
         const userCards  = new userFlashcards({flashcardId, email, terms, definitions, title, description});
         await userCards.save();        
 
-        return res.status(201).json({success : true, id : flashcardId});
+        return res.status(201).json({success : true, id : flashcardId, message : "Flashcard Created Successfully!"});
 
     } catch(error) {
         return res.json({success: false, messsage : error.message});
@@ -151,7 +151,7 @@ export const getFlashcardsByEmail = async (req, res) => {
             return res.json({success : false, message : "No flashcards exist by this email"})
         }
 
-        return res.json({success: true, message : "verify", data : data})
+        return res.json({success: true, message : "Data Returned Successfully", data : data})
     } catch(error) {
         return res.json({success : false, message : error.message});
     }
@@ -173,7 +173,7 @@ export const getLatestOpenedFlashcards = async (req,res) => {
             return res.json({success : false, message : "No flashcards exist by this email"})
         }
 
-        return res.json({success: true, message : "verify", data : data})
+        return res.json({success: true, message : "Data Returned Successfully", data : data})
     } catch(error) {
         return res.json({success : false, message : error.message});
     }
@@ -205,7 +205,7 @@ export const updateLastDateOpened = async (req, res) => {
 }
 
 /**
- * Methods that need to be done tonight 
+ * Methods that need to be done 
  * 
  * 
  * 

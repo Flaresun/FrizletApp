@@ -13,7 +13,9 @@ const Dashboard = () => {
    * Hard:
     * 
     * Donate Page
-    * Connecting Recent Flashcards and Daily Activity 
+    * Daily Activity 
+    * Search bar (should search your flashcard by term and description)
+    * dymanic page for user studying flashcard (might need vite plugin)
    */
   const {leftPanel,setLeftPanel} = useContext(AppContent);
   
