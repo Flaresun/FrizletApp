@@ -34,15 +34,19 @@ const Flashcards = () => {
       console.log(error)
     }
   }
-useEffect(() => {
-  getFlashcardData()
-},[userData])
+  const handleNavigation = (data) => {
+    navigate(`id?q=${data._id}`)
+  }
+
+  useEffect(() => {
+    getFlashcardData()
+  },[userData])
 
 
   const {data} = flashcardData;
   if (!data) return 
 
-
+  // id?q=1234
   return (
     <div className='flex px-[2rem] lg:px-[3rem] p-[3rem] lg:p-[2rem] '>
 
@@ -70,7 +74,7 @@ useEffect(() => {
                 (
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-5 mt-20">
                     {data.map((value, index) => (
-                      <div key={index} className="flex flex-col items-center justify-between border dark:border-slate-300 border-slate-600 px-4 py-4 rounded-md cursor-pointer hover:border-purple-400  hover:scale-105 transition-all">
+                      <div onClick={() => handleNavigation(data[index])} key={index} className="flex flex-col items-center justify-between border dark:border-slate-300 border-slate-600 px-4 py-4 rounded-md cursor-pointer hover:border-purple-400  hover:scale-105 transition-all">
                         <h1 className="text-2xl font-medium">{value.title}</h1>
                         <p className="text-lg text-wrap text-center py-1">{value.description ? value.description : "No Description"}</p>
                         <div className="flex">

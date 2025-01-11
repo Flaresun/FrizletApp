@@ -18,6 +18,8 @@ import Privacy from './components/DashboardComponents/Privacy';
 import { useEffect } from 'react';
 import { AppContent } from './context/AppContext';
 import CreateFlashcards from './components/DashboardComponents/CreateFlashcards';
+import Id from './components/DashboardComponents/[id]';
+import EditFlashcards from './components/DashboardComponents/EditFlashcards';
 const App = () => {
 
   const {theme} = useContext(AppContent);
@@ -47,6 +49,9 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/create-cards" element={<CreateFlashcards />} />
+          <Route path="/flashcards/:id" element={<Id/>} />
+          <Route path="/edit-flashcards/:id" element={<EditFlashcards />} />
+
 
         </Route>
       </Routes> 

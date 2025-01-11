@@ -6,6 +6,7 @@ import Chart from 'chart.js/auto';
 import { AppContent } from '../../context/AppContext';
 import axios from "axios";
 import { TfiFaceSad } from "react-icons/tfi";
+import { useNavigate } from 'react-router-dom';
 
 
 const Main = () => {
@@ -15,6 +16,7 @@ const Main = () => {
   const [graph, setGraph] = useState("");
   const {backendUrl, userData} = useContext(AppContent);
   const [latestFlashcards, setLatestFlashcards] = useState([]);
+  const navigate = useNavigate();
 
   /**
    * When the page is loaded here is the lifecycle of these following functions 
@@ -48,10 +50,20 @@ const Main = () => {
       const {data} = await axios.post(backendUrl + "/api/user/get-flashcards-by-email", {email})
       if (!data) throw new Error("Data not returned");
       if (!data.success) throw new Error(data.message);
+      
+      // Sort function
+      function descendingSorted (a,b) {
+        console.log(a.lastDateOpened)
+        if (a.lastDateOpened < b.lastDateOpened) {
+          return 1
+        }
+        if (a.lastDateOpened > b.lastDateOpened) {
+          return -1;
+        }
+        return 0;
+      }
 
-      // We only want to save the first 6; So we slice(0,5).
-      // Note we must also reverse the array because items are returned in ascending order no matter what we set it to in backend
-      const latestData = data.data.reverse();
+      const latestData = data.data.sort(descendingSorted);
       const end = 5; //  Set to 5 to return the 6 most recent opened flashcards 
       setLatestFlashcards(latestData.slice(0,end));
       
@@ -60,6 +72,10 @@ const Main = () => {
       console.log(error);
     }
 
+  }
+
+  const handleNavigation = (data) => {
+    navigate(`../flashcards/id?q=${data._id}`)
   }
 
   useEffect(() => {
@@ -90,7 +106,7 @@ const Main = () => {
             ) : (
               <div className="items-center justify-center grid grid-cols-1 sm:grid-cols-2 mt-5 gap-4 ">
                 {latestFlashcards.map((value,index) => (
-                  <div key={index} className="flex flex-row items-center hover:bg-slate-200 dark:hover:bg-slate-500 cursor-pointer active:bg-slate-300 dark:active:bg-slate-400">
+                  <div onClick={() => handleNavigation(value)} key={index} className="flex flex-row items-center hover:bg-slate-200 dark:hover:bg-slate-500 cursor-pointer active:bg-slate-300 dark:active:bg-slate-400">
                       <TbCards size={itemSize}/>
                       <div className="flex flex-col ml-3">
                         <p className="text-xl font-medium ">{value.title}</p>

@@ -1,0 +1,23 @@
+
+
+.flip-card {
+    perspective: 1000px; /* Remove this if you don't want the 3D effect */
+  }
+
+  .flip-card-inner {
+    position: relative;
+
+    text-align: center;
+    transition: transform 0.05s;
+    transform-style: preserve-3d;
+  }
+
+  .flip-card:active .flip-card-inner {
+    transform: rotateX(40deg);
+  }
+
+
+
+  .right-arrow:active+.flip-card-inner {
+    transform: translate(200px);
+  }

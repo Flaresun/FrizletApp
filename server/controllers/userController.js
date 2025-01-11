@@ -1,5 +1,6 @@
 import userModel from "../models/userModel.js";
 import userFlashcards from "../models/flashcardModel.js";
+import {ObjectId} from "mongodb"; 
 
 export const getUserData = async (req,res) => {
     try {
@@ -84,24 +85,14 @@ export const getUserFlashcardsById = async (req,res) => {
 
     try {
         // Get flashcard data
-        const flashcard = await userFlashcards.findOne({flashcardId});
+        const flashcard = await userFlashcards.findById((flashcardId));
 
         if (!flashcard) {
             return res.json({success : false, message : "Flashcard not found"});
         }
 
-        console.log(userFlashcards.find({"email" : flashcard.email}))
 
-        return res.json({success : true, message : "Data successfully returned", data : {
-            email : flashcard.email,
-            terms : flashcard.terms,
-            definitions : flashcard.definitions,
-            title : flashcard.title,
-            description : flashcard.description,
-            dateOfCreation: flashcard.dateOfCreation,
-            lastDateOpened : flashcard.lastDateOpened,
-            isPrivate : flashcard.isPrivate
-        }})
+        return res.json({success : true, message : "Data successfully returned", data : flashcard})
 
         
 
@@ -111,7 +102,7 @@ export const getUserFlashcardsById = async (req,res) => {
     
 }
 
-export const deleteUserFlashcards = async (req,res) => {
+export const deleteUserFlashcardsById = async (req,res) => {
     const {flashcardId} = req.body;
 
     if (!flashcardId) {
@@ -120,13 +111,13 @@ export const deleteUserFlashcards = async (req,res) => {
 
     try {
         // Get flashcard data
-        const flashcard = await userFlashcards.findOne({flashcardId});
+        const flashcard = await userFlashcards.findById((flashcardId))
 
         if (!flashcard) {
             return res.json({success : false, message : "Flashcard not found"});
         }
 
-        await userFlashcards.deleteOne({"flashcardId" :flashcardId});
+        await userFlashcards.deleteOne({"_id" :flashcardId});
         
         return res.json({success : true, message : "Flashcard successfully deleted"})
 
@@ -189,19 +180,64 @@ export const updateLastDateOpened = async (req, res) => {
 
     try {
 
-        const userData = await userFlashcards.findOne({flashcardId});
+        const userData = await userFlashcards.findById((flashcardId))
 
         if (!userData) return res.json({success:false, message : "Document not found from Id"});
 
         userData.lastDateOpened = Date.now();
-
-        userData.save();
+        await userData.save();
 
         return res.status(201).json({success: true, message : "lastDateOpened Field Updated Successfully "})
 
     } catch (error) {
         return res.json({success : false, message : error.message});
     }
+}
+
+export const matchingElementsByTitle = async (req, res) => {
+    const {email, str} = req.body;
+
+    if (!email || !str) {
+        return res.json({success:false, message: "Email and Id Required"})
+    }
+
+    try {
+        const re = new RegExp(`${str}`,"i")
+        const data = await userFlashcards.find({"title" : {$regex : re}});
+        if (!data) return res.json({success : false, message : `No Matches for ${str}`})
+        return res.json({success: true, message : `Match for element: ${str}, found`, data : data}); // Returns empty array if there is no match 
+    } catch(error) {
+        return res.json({success : false, message : error.message});
+    }
+}
+
+export const updateFlashcardById = async (req,res) => {
+    const {flashcardId, title, description, terms, definitions} = req.body;
+
+    if (!flashcardId || !title || !description || !terms || !definitions)  {
+        return res.json({success:false, message: "FlashcardId, title, description, terms, and definitions are required"})
+    }
+
+    try {
+        const data = await userFlashcards.updateOne({"_id" : flashcardId}, {
+            $set : {
+                title : title,
+                description:description,
+                terms:terms,
+                definitions : definitions, 
+                lastDateOpened:Date.now()}
+
+        });
+        if (!data) return res.json({success : false, message : `Error Updating Flashcard`})
+        //data.save();
+        return res.json({success: true, message : `Flashcard Updated Successfully`, data : data}); // Returns empty array if there is no match 
+
+    } catch (error) {
+        return res.json({success : false, message : error.message});
+    }
+
+
+
 }
 
 /**

@@ -18,7 +18,7 @@ import { IoClose } from "react-icons/io5";
 
 const Navbar = (props) => {
     
-    const {backendUrl, userData, setUserData,isLoggedin, setIsLoggedin, theme,setTheme,leftPanel, setLeftPanel} = useContext(AppContent);
+    const {backendUrl, userData,isLoggedin, setIsLoggedin, theme,setTheme,leftPanel, setLeftPanel} = useContext(AppContent);
 
     const userName = userData.email.split("@")[0]   
     const userTag  = userName.split("")[0].toUpperCase()
@@ -47,7 +47,9 @@ const Navbar = (props) => {
     addEventListener("mousedown", (e) => {
         // Note that every element in the modal was given the className modal
         // Also we have to check their parent to account for any edge cases especially due to the <path></path> not containing modal class
-        !e.target.classList.contains("modal")  && !(e.target.nodeName === "path") && setUserActive(false)
+        
+        !e.target.classList.contains("modal")  && !(e.target.nodeName === "path") && !e.target.classList.contains("flashcard-search") && setUserActive(false)
+        !e.target.classList.contains("flashcard-search") && setShowResult(false) 
     })
 
     addEventListener("scroll", (e) => {
@@ -83,11 +85,37 @@ const Navbar = (props) => {
           });
     }
 
-    const [inputValue, setInputValue] = useState("");
-    const handleInput = (e) => {
-        setInputValue(e.target.value);
-        
+    const [result, setResult] = useState([]);
+    const [showResult, setShowResult] = useState(false);
+    const handleInput = async (e) => {
+
+        const {email} = userData;
+        const str = e.target.value
+        if (!str) return;
+        try {
+            const {data} = await axios.post(backendUrl + "/api/user/matching-elements-by-title", {email, str})
+            if (!data) throw new Error("No Data");
+            if (!data.success) throw new Error(data.message);
+            setResult(data.data)
+        } catch (error) {
+            console.log(error.message);
+        }       
     }
+
+    const toggleShowResult = () => {
+        setShowResult((prev) => !prev)
+    }
+
+    const handleClick = () => {
+        setShowResult((prev) => true);
+    }
+    const handleSubmit = () => {
+        ;
+    }
+    const handleSearchItem = (id) => {
+        navigate(`../flashcards/id?q=${id}`)
+    }
+
 
   return (
     <div className="flex flex-col">    
@@ -104,9 +132,24 @@ const Navbar = (props) => {
                         {leftPanel ? <IoClose size={60} />: <RxHamburgerMenu size={60} />}
             </div>
             {props.search && (
-                <div onClick={showSearchBar}className="flex flex-row items-center justify-center text-center p-3 600 rounded-md shadow-md text-lg ">
-                    <button className='mx-3 cursor-pointer'><CiSearch size={30} /></button>
-                    <input type="text"  value={inputValue}  onInput={handleInput} className="outline-none w-0 hover:w-full md:w-full bg-transparent" placeholder='Search for your Flashcards'/>
+                <div onClick={showSearchBar}className="flex flex-col relative items-center justify-center text-center p-3 600 rounded-md shadow-md text-lg ">
+                    <div className="flex flex-row">
+                        <button onClick={handleSubmit} className='mx-3 cursor-pointer'><CiSearch size={30} /></button>
+                        <input type="text"  onInput={handleInput} onClick={handleClick} className="flashcard-search outline-none w-0 md:w-full bg-transparent" placeholder='Search for your Flashcards'/>
+                    </div>
+
+                    {showResult && (
+                        <div className="flashcard-search flex flex-col absolute top-28 sm:top-14 w-[80vh] sm:w-full">
+                            <div className="flashcard-search flex flex-col shadow-lg rounded-m max-w-full">
+                                {result.map((value,_) => (
+                                    <h1 onClick={() => handleSearchItem(value._id)} key={value._id} className="w-full flashcard-search dark:hover:bg-slate-500 cursor-pointer rounded-md">{value.title}</h1>
+                                ))}
+
+
+                            </div>
+                        </div>
+                    )}
+
                 </div>
             )}
             
@@ -117,7 +160,7 @@ const Navbar = (props) => {
 
                 {userActive && 
 
-                <div className="modal flex flex-col absolute top-16 items-start justify-start text-lg font-light  bg-slate-400 dark:bg-slate-800 py-4 rounded-md text-nowrap">
+                <div className="modal flex flex-col absolute top-16 items-start justify-start text-lg font-light  bg-slate-400 dark:bg-slate-800 py-4 rounded-md text-nowrap z-10">
                     <div onClick={() => navigate("/profile")} className="modal flex flex-row w-full  hover:bg-slate-100 active:bg-slate-200  hover:text-slate-600 rounded-md cursor-pointer p-1">
                         <IoMdPerson size={itemSize} className='modal'/>
                         <p className="ml-3 modal">Profile</p>
@@ -145,7 +188,7 @@ const Navbar = (props) => {
         <div className="flex items-center justify-center">
             {searchActive && 
             <div className="flex flex-row items-center justify-center text-center p-3 600 rounded-md shadow-md text-lg dark:text-slate-300">
-                    <input value={inputValue}  onInput={handleInput} type="text" className="outline-none w-full md:w-full bg-transparent" placeholder='Search for your Flashcards'/>
+                    <input onInput={handleInput} onClick={handleClick} type="text" className="flashcard-search outline-none w-full bg-transparent" placeholder='Search for your Flashcards'/>
             </div>
             }
         </div>
