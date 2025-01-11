@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { TbCards } from "react-icons/tb";
-import FlashCards from '../../assets/Flashcards';
-import GraphData from './utils/GraphProgress.jsx';
 import Chart from 'chart.js/auto';
 import { AppContent } from '../../context/AppContext';
 import axios from "axios";

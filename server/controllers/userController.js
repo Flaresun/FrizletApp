@@ -332,8 +332,6 @@ export const getDataByWeek = async (req, res) => {
         
         for (let i = 0; i < weeks[month].length; i++) {
             const arr = weeks[month][i];
-            console.log(arr);
-            console.log(arr[currentWeek])
             if (arr[currentWeek] === undefined) {
                 result.push(0);
             } else {

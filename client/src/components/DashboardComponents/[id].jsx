@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import {useNavigate, useSearchParams } from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import axios from 'axios';
 import { AppContent } from '../../context/AppContext';
 import { toast } from 'react-toastify';
@@ -39,7 +39,6 @@ const id = () => {
             try {
                 const time = 5/60
                 const {data} = await axios.post(backendUrl + "/api/user/add-hour-time-by-email",{email,time})
-                console.log(data);
             } catch (error) {
                 console.log(error);
             }            
