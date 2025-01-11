@@ -14,7 +14,7 @@ const Dashboard = () => {
     * 
     * Donate Page
     * Daily Activity 
-    * Profile Img (ignore)
+    *
    */
   const {leftPanel,setLeftPanel} = useContext(AppContent);
   

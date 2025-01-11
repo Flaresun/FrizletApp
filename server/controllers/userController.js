@@ -1,6 +1,6 @@
 import userModel from "../models/userModel.js";
 import userFlashcards from "../models/flashcardModel.js";
-import {ObjectId} from "mongodb"; 
+import activityModel from "../models/activityModel.js";
 
 export const getUserData = async (req,res) => {
     try {
@@ -246,4 +246,138 @@ export const updateFlashcardById = async (req,res) => {
  * 
  * 
  * timerFunction that logs the time that the user enters and exits the page (Might need a third db for this fk )
+ * addTime(email, time) => save the time that the user spent studying 
+ * weekTime(email) => return the time for the current week (sun-sat)
+ * monthTime(email) => return the time for the current year (jan-dec)
  */
+const monthMapper = {
+    0: "janurary",
+    1: "february",
+    2: "march",
+    3: "april",
+    4: "may",
+    5: "june",
+    6: "july",
+    7: "august",
+    8: "september",
+    9: "october",
+    10: "november",
+    11: "december",
+}
+
+export const createUserActivity = async (req,res) => {
+    const {email} = req.body;
+
+    if (!email) return res.json({success:false, message:"Email required"});
+
+    try {
+        const userActivity  = new activityModel({email});
+        await userActivity.save(); 
+        return res.status(201).json({success : true, message : "User Activity Created Successfully!"});
+    } catch (error) {
+        return res.json({success : false, message:error.message});
+    }
+}
+
+export const addHourTimeByEmail = async (req, res) => {
+    const {email,time} = req.body;
+    
+    // Code assumes that time is in hours 
+    
+    if (!email || !time) {
+        return res.json({success:false, message:"Email and time required"});
+    }
+
+    try {   
+        const date = new Date();
+        const currentWeek = Math.floor(date.getDate() / 7);
+        const month = monthMapper[date.getMonth()];
+        const day = date.getDay();
+        const weeks = await activityModel.findOne({email})
+        // Sunday - Saturday : 0 - 6
+
+        while (weeks[month][day].length-1 < currentWeek) {
+            weeks[month][day].push(0);
+        }
+        weeks[month][day][currentWeek] +=parseFloat(time);
+        const {_id, janurary,feburary,march, april, may, june, july, august, september, october, november, december} = weeks;
+        const reSave = new activityModel({email,janurary,feburary,march, april, may, june, july, august, september, october, november, december})
+
+        // For some reason it is not letting me update it directly. So I have to delete and then create
+        await activityModel.deleteOne({"_id" : _id})
+        await reSave.save();
+
+        return res.json({success : true,message:"Time added successfully", data : reSave})
+
+    } catch (error) {
+        return res.json({success : false, message:error.message});
+    }
+}
+
+export const getDataByWeek = async (req, res) => {
+    const {email} = req.body;
+        
+    if (!email) {
+        return res.json({success:false, message:"Email is required"});
+    }
+
+    try {   
+        const date = new Date();
+        const currentWeek = Math.floor(date.getDate() / 7);
+        const month = monthMapper[date.getMonth()];
+        const day = date.getDay();
+        const weeks = await activityModel.findOne({email})
+        // Sunday - Saturday : 0 - 6
+        const result = []
+        
+        for (let i = 0; i < weeks[month].length; i++) {
+            const arr = weeks[month][i];
+            console.log(arr);
+            console.log(arr[currentWeek])
+            if (arr[currentWeek] === undefined) {
+                result.push(0);
+            } else {
+                result.push(arr[currentWeek]);
+            }
+            
+        }
+
+        return res.json({success : true,message:"Time added successfully", data : result})
+
+    } catch (error) {
+        return res.json({success : false, message:error.message});
+    }
+}
+
+
+export const getDataByYear = async (req, res) => {
+    const {email} = req.body;
+        
+    if (!email) {
+        return res.json({success:false, message:"Email is required"});
+    }
+
+    try {   
+        const date = new Date();
+        const currentWeek = Math.floor(date.getDate() / 7);
+        const month = monthMapper[date.getMonth()];
+        const day = date.getDay();
+        const weeks = await activityModel.findOne({email})
+        // Sunday - Saturday : 0 - 6
+        const result = []
+        
+        for (let i = 0; i < 12; i++) {
+            const arr = weeks[monthMapper[i]]
+            let sum = 0;
+            arr.forEach((e) => {
+                sum+=e.reduce((partialSum, a) => partialSum + a, 0);
+            })
+            result.push(sum);
+        }
+
+        return res.json({success : true,message:"Time added successfully", data : result})
+
+    } catch (error) {
+        return res.json({success : false, message:error.message});
+    }
+}

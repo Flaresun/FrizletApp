@@ -45,11 +45,12 @@ const LeftPanel = () => {
                 <p className="ml-5">Settings</p>
             </div>
             {/**DIVIDER */}
-
+            {/**NO DONATE PAGE FOR NOW 
             <div onClick={() => navigate("/donate")} className="flex flex-row items-center justify-center px-5 rounded-2xl p-5 w-full hover:bg-slate-100 dark:hover:bg-slate-800 active:bg-slate-200 dark:active:bg-slate-600">
                 <FaDonate size={size} />
                 <p className="ml-5">Donate</p>
             </div>
+            */}
             {/**DIVIDER */}
             
             <div onClick={() => navigate("/about")} className="flex flex-row items-center justify-center px-5 rounded-2xl p-5 w-full hover:bg-slate-100 dark:hover:bg-slate-800 active:bg-slate-200 dark:active:bg-slate-600">

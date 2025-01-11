@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { TbCards } from "react-icons/tb";
 import FlashCards from '../../assets/Flashcards';
-import GraphData from './utils/GraphProgress';
+import GraphData from './utils/GraphProgress.jsx';
 import Chart from 'chart.js/auto';
 import { AppContent } from '../../context/AppContext';
 import axios from "axios";
@@ -11,11 +11,10 @@ import { useNavigate } from 'react-router-dom';
 
 const Main = () => {
 
-  const days = ["Sunday", "Monday","Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-  const time = ["5","10","3","10","5","4", "8"]
   const [graph, setGraph] = useState("");
   const {backendUrl, userData} = useContext(AppContent);
   const [latestFlashcards, setLatestFlashcards] = useState([]);
+  const [isDay, setIsDay] = useState(true); // false impllies month 
   const navigate = useNavigate();
 
   /**
@@ -29,18 +28,106 @@ const Main = () => {
    * 6) Whilst not added now, upon clicking that button, new data will be loaded and then the useEffect will rerender the page
    * 
    */
+    // addGraphData
     Chart.defaults.color = "#111112";
+    const days = ["Sunday", "Monday","Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    const months = ["Janurary", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    const [dayData, setDayData] = useState([])
+    const [monthData, setMonthData] = useState([])
+    
+    const barColors = "#183a70"
+    const windowWidth = window.innerWidth;
+    
+    const axis = windowWidth < 1000 ? "y" : "x"
+
+    const addGraphDataDaily = async() => {
+      const {email}  = userData;
+      try {
+        const {data} = await axios.post(backendUrl + "/api/user/get-data-by-week",{email})
+        if (!data.success) {
+          toast.error("Error Getting Data")
+          return;
+        }
+
+        const res = {
+          type: "bar",
+          
+          data : {
+              labels : isDay ? days : months,
+              datasets : [{
+                  backgroundColor : barColors,
+                  label : null,
+                  data: data.data
+              }]
+          },
+          options : {
+              indexAxis: axis,
+              maintainAspectRatio: false,
+              skipNull : true,
+              plugins : {
+                  legend : {
+                      display: false,
+                  }
+              }
+          }
+        };
+        setDayData(res)
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    const addGraphDataMonthly = async() => {
+      const {email}  = userData;
+      try {
+        const {data} = await axios.post(backendUrl + "/api/user/get-data-by-year",{email})
+        if (!data.success) {
+          toast.error("Error Getting Data")
+          return;
+        }
+        
+        const res = {
+          type: "bar",
+          data : {
+              labels : months,
+              datasets : [{
+                  backgroundColor : barColors,
+                  label : null,
+                  data: data.data
+              }]
+          },
+          options : {
+              indexAxis: axis,
+              maintainAspectRatio: false,
+              skipNull : true,
+              plugins : {
+                  legend : {
+                      display: false,
+                  }
+              }
+          }
+        };
+        setMonthData(res)
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
 
     const timeOut = setTimeout(() => {
-      !graph.$context && setGraph(new Chart("myDiv",GraphData));
+      if (dayData.length === 0 || monthData.length ===0) return
+      !graph.$context && setGraph(new Chart("myDiv", isDay ? dayData : monthData));
     }, 500)
 
   const changeGraphData = () => {
+    setIsDay((prev) => !prev);
     graph.$context && graph.destroy();
-    setGraph(new Chart("myDiv",GraphData)); 
-
+    if (dayData.length === 0 || monthData.length ===0) return
+    setGraph(new Chart("myDiv",!isDay ? dayData : monthData));  // The state always lags one step behind. So to fix it, I used the not operator 
   } 
+
 
   const getLatestOpenedFlashcards = async () => {
     if (!userData && !userData.email) return;
@@ -53,7 +140,6 @@ const Main = () => {
       
       // Sort function
       function descendingSorted (a,b) {
-        console.log(a.lastDateOpened)
         if (a.lastDateOpened < b.lastDateOpened) {
           return 1
         }
@@ -84,9 +170,10 @@ const Main = () => {
 
   useEffect(() => {
     getLatestOpenedFlashcards()
-  },[userData])
+    addGraphDataDaily();
+    addGraphDataMonthly();
+  },[userData])  
 
-  
 
   const itemSize = 30;
   return (
@@ -123,8 +210,9 @@ const Main = () => {
           {/**Second section about recent activity */}
           <div  className="flex flex-col mt-5 h-full">
 
-            <div className="flex pb-2 text-2xl items-center justify-center">
-              <h1 className="dark:text-slate-900">(Daily) Activity </h1>
+            <div className="flex flex-col pb-2 text-2xl items-center justify-center">
+              <h1 className="dark:text-slate-900">{`${isDay ? `Daily` : `Monthly`} Activity `}</h1>
+              <p className="text-sm dark:text-slate-700 ">Hourly</p>
             </div>
 
             <div className="flex flex-col items-center justify-between max-h-full">
@@ -133,7 +221,7 @@ const Main = () => {
               </div>
 
               <div className="flex items-center justify-center ">
-                <button onClick={changeGraphData} className="max-h-full px-4 py-2 text-lg font-medium rounded-md bg-slate-200 dark:bg-slate-600 ">{`Swap to Daily`}</button>
+                <button onClick={changeGraphData} className="max-h-full px-4 py-2 text-lg font-medium rounded-md bg-slate-200 dark:bg-slate-600 ">{`Swap to ${isDay ? `Monthly` : `Daily`}`}</button>
               </div>
             </div>
             

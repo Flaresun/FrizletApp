@@ -18,7 +18,7 @@ const id = () => {
     const [flashcardId,setFlashcardId] = useState(params.get('q'));
     const [flashcardData, setFlashcardData] = useState([])
     const navigate = useNavigate();
-    const {backendUrl} = useContext(AppContent);
+    const {backendUrl,userData} = useContext(AppContent);
     const itemSize = 30; 
     const {leftPanel,setLeftPanel} = useContext(AppContent);
     const [start, setStart] = useState(1);
@@ -26,11 +26,26 @@ const id = () => {
     const [isFlashcardFront, setIsFlashccardFront] = useState(true);
     const [menu, setMenu] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
+
     addEventListener("resize", (e) => {
         if (e.target.innerWidth > 768) {
         setLeftPanel(false);
         }
     });
+    const {email} = userData;
+
+    useEffect(() => {
+        setInterval(async() => {
+            try {
+                const time = 5/60
+                const {data} = await axios.post(backendUrl + "/api/user/add-hour-time-by-email",{email,time})
+                console.log(data);
+            } catch (error) {
+                console.log(error);
+            }            
+        },1000*60*1) // Every 1 minutes on this page, save the time 
+    },[])
+   
 
     const getDataById = async () => {
         if (!flashcardId) return;
@@ -43,7 +58,6 @@ const id = () => {
             // Update the last opened date 
 
             const updateResult = await axios.post(backendUrl + "/api/user/update-last-opened-date", {flashcardId})
-            console.log(updateResult)
         } catch (error) {
             toast.error(error.message);
             navigate("../dashboard")
@@ -59,6 +73,8 @@ const id = () => {
         if (start === 1 && value===-1) return;
         if (start === flashcardData.terms.length && value===1) return
         setStart((prev) => prev+value);
+        setIsFlashccardFront(true);
+
 
         // Animation
         const divElement = document.getElementById('card-flip')
