@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react'
 import LeftPanel from '../../components/DashboardComponents/LeftPanel'
 import Navbar from '../../components/DashboardComponents/Navbar'
 import { AppContent } from '../../context/AppContext'
-import userFlashCards from '../../assets/userFlashCards'
 import { useNavigate } from 'react-router-dom'
 import { FaRegTrashCan } from "react-icons/fa6";
 import {toast} from "react-toastify";
