@@ -37,7 +37,7 @@ const id = () => {
     useEffect(() => {
         setInterval(async() => {
             try {
-                const time = 5/60
+                const time = 1/60
                 const {data} = await axios.post(backendUrl + "/api/user/add-hour-time-by-email",{email,time})
             } catch (error) {
                 console.log(error);
@@ -116,15 +116,15 @@ const id = () => {
                     
                 : 
                     (
-                    <div className="flex flex-col items-center justify-center">
+                    <div className="flex flex-col items-center justify-center ">
 
-                        <div className="flex items-center justify-around w-full text-center mt-5 sm:mt-0">
+                        <div className="flex items-center justify-around w-full text-center mt-5 sm:mt-0 mb-10">
                             <h1 className="flex items-center justify-center text-2xl sm:text-4xl">{flashcardData.title}</h1>
                             <div onClick={() => setMenu((prev) => !prev)} className="flex cursor-pointer relative">
                                 <RxHamburgerMenu size={itemSize} className='modal'/>
                                 
                                 {menu && (
-                                    <div className="modal flex flex-col absolute bg-slate-500 top-10 px-4 py-2  left-[-40px] rounded-md items-start text-slate-300 z-[8]">
+                                    <div className="modal flex flex-col absolute bg-slate-500 top-10 px-4 py-2 left-[-60px] sm:left-[-40px] rounded-md items-start text-slate-300 z-[8]">
                                         <div onClick={() => setDeleteModal((prev) => !prev)} className="modal w-full flex flex-row items-center justify-around text-center cursor-pointer p-2 hover:bg-slate-400 rounded-md text-red-500">
                                             <MdDelete size={20} className='modal '/>
                                             <p className="modal  ml-5 ">Delete</p>
@@ -141,22 +141,22 @@ const id = () => {
                         </div>
 
                          {/** MAIN CONTENT */}
-                        <div className="flip-card flex w-full items-center justify-center">
-                            <div id='card-flip' className={`flip-card-inner flex w-full sm:w-2/3 h-[50vh] rounded-md dark:bg-slate-400  dark:bg-opacity-20 shadow-lg my-10 ease-in-out`}>
+                        <div className="flip-card flex w-full items-center justify-center sm:w-2/3 h-full">
+                            <div onClick={() => setIsFlashccardFront((prev) => !prev)} id='card-flip' className={`flip-card-inner flex w-full h-[50vh] rounded-md dark:bg-slate-400  dark:bg-opacity-20 shadow-lg  ease-in-out`}>
                                 {isFlashcardFront ? (
-                                <div onClick={() => setIsFlashccardFront((prev) => !prev)} className="relative card-front flex items-center justify-center text-center text-4xl w-full cursor-pointer ">
+                                <div className="relative  flex h-full items-center justify-center text-center text-4xl w-full cursor-pointer ">
                                     <p className="text-sm absolute top-0 left-0 p-2" >Front</p>
                                     <h1 className="">{flashcardData.terms[start-1]}</h1>
                                 </div>
                                 ) : (
-                                <div onClick={() => setIsFlashccardFront((prev) => !prev)} className="card-back flex items-center justify-center text-center text-4xl w-full cursor-pointer ">
+                                <div className="card-back flex items-center justify-center text-center text-4xl w-full cursor-pointer ">
                                     <h1 className="">{flashcardData.definitions[start-1]}</h1>
                                 </div>
                                 )}
 
                             </div>
                         </div>
-                        <div className="flex items-center ">
+                        <div className="flex items-center my-10">
                             <button onClick={() => toggleSlide(-1)} className="left-arrow flex border rounded-full px-4 py-2 cursor-pointer hover:bg-slate-400 active:scale-95 transition-all"><FaArrowLeft size={itemSize}/></button>
                             <div className="flex px-5 text-xl font-semibold">
                                 <h1 className="">{start}/{flashcardData.terms.length}</h1>
