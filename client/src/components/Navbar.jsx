@@ -5,7 +5,7 @@ import { AppContent } from '../context/AppContext.jsx';
 import axios from "axios";
 import { toast } from 'react-toastify';
 
-const NavBar = () => {
+const Navbar = () => {
 
   const navigate = useNavigate();
 
@@ -71,4 +71,4 @@ const NavBar = () => {
   )
 }
 
-export default NavBar
+export default Navbar;

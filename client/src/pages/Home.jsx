@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import NavBar from '../components/NavBar'
+import Navbar from '../components/Navbar';
 import Header from '../components/Header'
 import Stats from '../components/Stats'
 import Main from '../components/Main'
@@ -19,7 +19,7 @@ const Home = () => {
 
   return (
     <div className='max-w-[200rem] min-h-screen  bg-white'>
-        <NavBar/>
+        <Navbar/>
         <Header/>
         <Stats />
         <Main />
