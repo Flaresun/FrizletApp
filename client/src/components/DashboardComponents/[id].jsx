@@ -10,7 +10,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
-import DeleteFlashcardModal from './utils/deleteFlashcardModal';
+import DeleteFlashcardModal from './utils/DeleteFlashcardModal';
 import "./FlashcardFlip.css";
 const id = () => {
 
