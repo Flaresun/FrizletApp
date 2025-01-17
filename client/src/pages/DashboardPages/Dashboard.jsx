@@ -4,6 +4,7 @@ import Navbar from '../../components/DashboardComponents/Navbar'
 import Main from '../../components/DashboardComponents/Main'
 import { RxHamburgerMenu } from "react-icons/rx";
 import { AppContent } from '../../context/AppContext';
+import { toast } from 'react-toastify';
 
 const Dashboard = () => {
 
