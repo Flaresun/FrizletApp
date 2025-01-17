@@ -7,7 +7,7 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import {toast} from "react-toastify";
 import axios from "axios"
 
-const EdtFlashcards = () => {
+const EditFlashcards = () => {
 
 
     const [cardArray, setCardArray] = useState(new Array(5));
@@ -26,7 +26,7 @@ const EdtFlashcards = () => {
         if (!flashcardId) return;
 
         try {
-            const {data} = await axios.post(backendUrl + "/api/user//get-flashcards-by-id", {flashcardId})
+            const {data} = await axios.post(backendUrl + "/api/user/get-flashcards-by-id", {flashcardId})
             if (!data) toast.error("Data not found");
             if (!data.success) throw new Error("Flashcard Not Found")
             setFlashcardData(data.data);
@@ -209,4 +209,4 @@ const EdtFlashcards = () => {
     )
 }
 
-export default EdtFlashcards
+export default EditFlashcards
