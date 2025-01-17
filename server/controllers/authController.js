@@ -173,7 +173,7 @@ export const verifyEmail = async (req,res) => {
         user.verifyOTPExpireAt = 0;
 
         await user.save();
-
+        
         return res.json({success : true, message : "Email verified successfully"})
 
     } catch (error) {

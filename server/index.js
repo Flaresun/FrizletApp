@@ -10,7 +10,7 @@ const app = express()
 const port = process.env.PORT || 4000 
 connectDB()
 
-const allowedOrigins = ["https://frizlet-app-frontend.vercel.app"]
+const allowedOrigins = ["https://frizlet-app-frontend.vercel.app/"]
 
 app.use(express.json());
 app.use(cookieParser());

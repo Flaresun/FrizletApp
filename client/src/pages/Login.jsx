@@ -32,13 +32,15 @@ const Login = () => {
 
         setIsLoggedin(true);
         getUserData();
-        navigate("/email-verify"); // EVENTUALLY CHANGE THIS TO EMAIL-VERIFY 
+        navigate("/email-verify");
 
       } else {
         // Login API CALL
         const {data} = await axios.post(backendUrl + "/api/auth/login", {email, password})
-
         
+        // Create new user activity
+        await axios.post(backendUrl + "/api/user/create-user-activity", {email})
+
         if (!data.success) {
           throw new Error(data.message)
         }
