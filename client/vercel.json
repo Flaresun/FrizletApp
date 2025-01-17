@@ -1,15 +1,13 @@
 {
-    "rewrites":  [
-      {"source": "/(.*)", "destination": "/"}
-    ],
-    "routes" : [
-        {
-            "src" : "/(.*)",
-            "dest":"/",
-            "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-            "headers": {
+  "rewrites":  [
+      {
+        "source": "/(.*)", 
+      "destination": "/",
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+      "headers": {
                 "Access-Control-Allow-Origin": "https://frizlet-app-frontend.vercel.app"
             }
-        }
-    ]
+      }
+  ]
+
 }
